@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/immanuel-254/blog/auth"
+	"github.com/immanuel-254/blog/blog/views"
 )
 
 var (
@@ -140,7 +141,29 @@ func Api() {
 		LogList,
 	}
 
+	allblogviews := []views.View{
+		views.BlogCreateView,
+		views.BlogDeleteView,
+		views.BlogListView,
+		views.BlogReadView,
+		views.BlogUpdateView,
+		views.CategoryCreateView,
+		views.CategoryDeleteView,
+		views.CategoryReadView,
+		views.CategoryListView,
+		views.CategoryUpdateView,
+		views.CommentCreateView,
+		views.CommentDeleteView,
+		views.CommentReadView,
+		views.CommentListView,
+		views.CommentUpdateView,
+		views.ProfileListView,
+		views.ProfileReadView,
+		views.ProfileUpdateView,
+	}
+
 	auth.Routes(mux, allviews)
+	views.Routes(mux, allblogviews)
 
 	server := &http.Server{
 		Addr: fmt.Sprintf(":%s", os.Getenv("PORT")), // Custom port

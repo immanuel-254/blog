@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS categories (
 CREATE TABLE IF NOT EXISTS comments (
 	id INTEGER PRIMARY KEY,
    user_id INTEGER,
+   blog_id INTEGER,
    body TEXT NOT NULL,
    created_at TIMESTAMP,
    updated_at TIMESTAMP,
@@ -24,6 +25,10 @@ CREATE TABLE IF NOT EXISTS comments (
       REFERENCES users (id) 
          ON DELETE CASCADE 
          ON UPDATE NO ACTION
+   FOREIGN KEY (blog_id) 
+      REFERENCES blogs (id) 
+        ON DELETE CASCADE 
+        ON UPDATE NO ACTION
 );
 
 CREATE TABLE IF NOT EXISTS blogs (
@@ -48,22 +53,6 @@ CREATE TABLE IF NOT EXISTS category_blogs (
    PRIMARY KEY (category_id, blog_id),
    FOREIGN KEY (category_id) 
       REFERENCES categories (id) 
-        ON DELETE CASCADE 
-        ON UPDATE NO ACTION,
-   FOREIGN KEY (blog_id) 
-      REFERENCES blogs (id) 
-        ON DELETE CASCADE 
-        ON UPDATE NO ACTION
-);
-
-CREATE TABLE IF NOT EXISTS comment_blogs (
-   comment_id INTEGER NOT NULL,
-   blog_id INTEGER NOT NULL,
-   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-   PRIMARY KEY (comment_id, blog_id),
-   FOREIGN KEY (comment_id) 
-      REFERENCES comments (id) 
         ON DELETE CASCADE 
         ON UPDATE NO ACTION,
    FOREIGN KEY (blog_id) 

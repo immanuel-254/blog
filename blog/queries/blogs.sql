@@ -31,6 +31,10 @@ WHERE id = ?;
 SELECT blog_id, category_id, created_at, updated_at FROM category_blogs
 WHERE blog_id = ? ORDER BY blog_id ASC, category_id ASC;
 
+-- name: BlogCommentsList :many
+SELECT id, blog_id, user_id, body ,created_at, updated_at FROM comments
+WHERE blog_id = ? ORDER BY blog_id ASC;
+
 -- name: BlogUpdate :one
 UPDATE blogs
 SET 
