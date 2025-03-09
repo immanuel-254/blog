@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/immanuel-254/blog/auth/models"
+	"github.com/immanuel-254/blog/database"
 )
 
 // Config defines the configuration for the middleware.
@@ -192,7 +193,7 @@ const current_user currentUser = "current_user"
 
 func RequireAuth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		queries := models.New(DB)
+		queries := models.New(database.DB)
 		ctx := r.Context()
 
 		var token string
@@ -247,7 +248,7 @@ func RequireAuth(next http.Handler) http.Handler {
 
 /*func RequireStaff(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		queries := models.New(DB)
+		queries := models.New(database.DB)
 		ctx := context.Background()
 
 		if w.Header().Get("auth") == "" {
@@ -292,7 +293,7 @@ func RequireAuth(next http.Handler) http.Handler {
 
 func RequireAdmin(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		queries := models.New(DB)
+		queries := models.New(database.DB)
 		ctx := r.Context()
 
 		var token string
@@ -352,7 +353,7 @@ func RequireAdmin(next http.Handler) http.Handler {
 
 func DashRequireAdmin(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		queries := models.New(DB)
+		queries := models.New(database.DB)
 		ctx := r.Context()
 
 		var token string

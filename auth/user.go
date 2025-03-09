@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/immanuel-254/blog/auth/models"
+	"github.com/immanuel-254/blog/database"
 )
 
 func Signup(w http.ResponseWriter, r *http.Request) {
@@ -18,7 +19,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	queries := models.New(DB)
+	queries := models.New(database.DB)
 	ctx := context.Background()
 
 	// get data
@@ -89,7 +90,7 @@ func ActivateEmail(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	queries := models.New(DB)
+	queries := models.New(database.DB)
 	ctx := context.Background()
 
 	// activate user
@@ -125,7 +126,7 @@ func UserRead(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	queries := models.New(DB)
+	queries := models.New(database.DB)
 	ctx := r.Context()
 
 	auth := ctx.Value(current_user)
@@ -155,7 +156,7 @@ func UserList(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	queries := models.New(DB)
+	queries := models.New(database.DB)
 
 	ctx := r.Context()
 
@@ -239,7 +240,7 @@ func ChangeEmail(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	queries := models.New(DB)
+	queries := models.New(database.DB)
 	ctx := r.Context()
 
 	auth := ctx.Value(current_user)
@@ -325,7 +326,7 @@ func ChangePassword(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	queries := models.New(DB)
+	queries := models.New(database.DB)
 	ctx := r.Context()
 
 	auth := ctx.Value(current_user)
@@ -436,7 +437,7 @@ func ResetPassword(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	queries := models.New(DB)
+	queries := models.New(database.DB)
 	ctx := r.Context()
 
 	auth := ctx.Value(current_user)
@@ -540,7 +541,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	queries := models.New(DB)
+	queries := models.New(database.DB)
 	ctx := r.Context()
 
 	auth := ctx.Value(current_user)
@@ -585,7 +586,7 @@ func IsActiveChange(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	queries := models.New(DB)
+	queries := models.New(database.DB)
 	ctx := r.Context()
 
 	auth := ctx.Value(current_user)
@@ -639,7 +640,7 @@ func IsStaffChange(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	queries := models.New(DB)
+	queries := models.New(database.DB)
 	ctx := r.Context()
 
 	auth := ctx.Value(current_user)

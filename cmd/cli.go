@@ -12,6 +12,7 @@ import (
 
 	"github.com/immanuel-254/blog/auth"
 	"github.com/immanuel-254/blog/auth/models"
+	"github.com/immanuel-254/blog/database"
 	"golang.org/x/term"
 )
 
@@ -42,7 +43,7 @@ func CreateAdminUser() {
 		panic(err)
 	}
 
-	queries := models.New(auth.DB)
+	queries := models.New(database.DB)
 	ctx := context.Background()
 
 	user, err := queries.UserCreate(ctx, models.UserCreateParams{

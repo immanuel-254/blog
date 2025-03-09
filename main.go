@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/immanuel-254/blog/auth"
 	"github.com/immanuel-254/blog/cmd"
+	"github.com/immanuel-254/blog/database"
 	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/pressly/goose/v3"
@@ -28,15 +28,21 @@ func main() {
 		}
 	}()
 
-	auth.DB = db
+	database.DB = db
 
 	// migrate to database
 	goose.SetDialect("sqlite3")
 
 	// Apply all "up" migrations
-	err = goose.Up(auth.DB, "auth/migrations")
+	err = goose.Up(database.DB, "auth/migrations")
 	if err != nil {
-		log.Fatalf("Failed to apply migrations: %v", err)
+		log.Fatalf("Failed to auth apply migrations: %v", err)
+	}
+
+	// Apply all "up" migrations
+	err = goose.Up(database.DB, "blog/migrations", goose.WithAllowMissing())
+	if err != nil {
+		log.Fatalf("Failed to blog apply migrations: %v", err)
 	}
 
 	log.Println("Migrations applied successfully!")
