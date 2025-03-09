@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/immanuel-254/blog/auth/models"
+	"github.com/immanuel-254/blog/database"
 )
 
 func Login(w http.ResponseWriter, r *http.Request) {
@@ -15,7 +16,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	queries := models.New(DB)
+	queries := models.New(database.DB)
 	ctx := context.Background()
 
 	// get data
@@ -39,7 +40,7 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	queries := models.New(DB)
+	queries := models.New(database.DB)
 	ctx := r.Context()
 
 	session, err := queries.SessionRead(ctx, w.Header().Get("auth"))
@@ -80,7 +81,7 @@ func SessionList(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	queries := models.New(DB)
+	queries := models.New(database.DB)
 	ctx := r.Context()
 
 	auth := ctx.Value(current_user)

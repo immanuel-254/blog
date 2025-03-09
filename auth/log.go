@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/immanuel-254/blog/auth/models"
+	"github.com/immanuel-254/blog/database"
 )
 
 func LogList(w http.ResponseWriter, r *http.Request) {
@@ -12,7 +13,7 @@ func LogList(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	queries := models.New(DB)
+	queries := models.New(database.DB)
 	ctx := r.Context()
 
 	auth := ctx.Value(current_user)
