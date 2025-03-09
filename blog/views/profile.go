@@ -18,6 +18,12 @@ import (
 const ProfileRouteGroup = "/profile"
 
 var (
+	ProfileCreateView = View{
+		Route:   fmt.Sprintf("%s/create/", ProfileRouteGroup),
+		Handler: http.HandlerFunc(ProfileCreate),
+		Methods: []string{http.MethodPost},
+	}
+
 	ProfileReadView = View{
 		Route:   fmt.Sprintf("%s/read/", ProfileRouteGroup),
 		Handler: http.HandlerFunc(ProfileRead),
@@ -36,6 +42,56 @@ var (
 		Methods: []string{http.MethodPut},
 	}
 )
+
+func ProfileCreate(w http.ResponseWriter, r *http.Request) {
+	// Entities To be Created; Blog
+	var data map[string]interface{}
+	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	queries := models.New(database.DB)
+	ctx := context.Background()
+
+	var input struct {
+		userid int64
+	}
+
+	if _, ok := data["userid"].(string); ok {
+		id, err := strconv.ParseInt(data["userid"].(string), 10, 64)
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		input.userid = id
+
+	}
+
+	profile, err := queries.ProfileCreate(ctx, models.ProfileCreateParams{
+		UserID:    sql.NullInt64{Int64: input.userid, Valid: true},
+		Username:  data["username"].(string),
+		Image:     sql.NullString{String: data["image"].(string), Valid: true},
+		CreatedAt: sql.NullTime{Time: time.Now(), Valid: true},
+	})
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	var output struct {
+		Profile models.Profile `json:"profile"`
+	}
+
+	output.Profile = profile
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(output)
+}
 
 func ProfileRead(w http.ResponseWriter, r *http.Request) {
 	idStr := strings.TrimPrefix(r.URL.Path, fmt.Sprintf("%s/read/", ProfileRouteGroup))

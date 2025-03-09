@@ -1,14 +1,8 @@
 -- name: ProfileCreate :one
-INSERT INTO profiles (
-    user_id, 
-    username,
-    image,
-    bio, 
-    created_at, 
-    updated_at
-    ) 
-    VALUES (?, ?, ?, ?, ?, ?)
-    RETURNING *;
+INSERT INTO profiles (user_id, username, image, bio, created_at, updated_at)
+SELECT ?, ?, ?, ?, ?, ?
+WHERE NOT EXISTS (SELECT 1 FROM profiles WHERE user_id = ?)
+RETURNING *;
 
 -- name: ProfileList :many
 SELECT id, user_id, username, image, bio, created_at, updated_at FROM profiles
